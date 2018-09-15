@@ -1,4 +1,3 @@
-library(data.table)
 varnametbl <- read.table("UCI HAR Dataset/features.txt", sep = " ")
 varnames <-varnametbl$V2
 
@@ -12,7 +11,6 @@ names(testxtbl) <-grep("mean|std", varnames, value = TRUE)
 
 testxtbl$activity=testytbl$V1
 testxtbl$subject=testsubjecttbl$V1
-testxtbl$observationtype="test"
 
 trainxtbl <- read.table("UCI HAR Dataset/train/X_train.txt", sep = "")
 trainytbl <- read.table("UCI HAR Dataset/train/y_train.txt", sep = "")
@@ -24,7 +22,6 @@ names(trainxtbl) <-grep("mean|std", varnames, value = TRUE)
 
 trainxtbl$activity=trainytbl$V1
 trainxtbl$subject=trainsubjecttbl$V1
-trainxtbl$observationtype="train"
 
 maindf <- rbind(testxtbl, trainxtbl)
 
@@ -35,5 +32,5 @@ maindf <-subset(maindf2,,-activity)
 
 write.table(maindf, file = "outputds.txt", row.names=FALSE)
 
-grouppedaverages <- aggregate(subset(maindf,,-c(activityname,subject,observationtype)), list(activityname = maindf$activityname, subject = maindf$subject), mean)
+grouppedaverages <- aggregate(subset(maindf,,-c(activityname,subject)), list(activityname = maindf$activityname, subject = maindf$subject), mean)
 write.table(grouppedaverages, file = "groupds.txt", row.names=FALSE)
