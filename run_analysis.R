@@ -32,4 +32,8 @@ actlabels <- read.table("UCI HAR Dataset/activity_labels.txt", sep = "")
 names(actlabels) <-c("activityid", "activityname")
 maindf2 = merge(maindf, actlabels, by.x = "activity", by.y = "activityid")
 maindf <-subset(maindf2,,-activity)
+
 write.table(maindf, file = "outputds.txt", row.names=FALSE)
+
+grouppedaverages <- aggregate(subset(maindf,,-c(activityname,subject,observationtype)), list(activityname = maindf$activityname, subject = maindf$subject), mean)
+write.table(grouppedaverages, file = "groupds.txt", row.names=FALSE)
